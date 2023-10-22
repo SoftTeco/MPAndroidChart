@@ -55,6 +55,12 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
     protected Highlight mLastLineTapped;
 
     /**
+     * Is the down time of motion even set
+     * Default false
+     */
+    protected boolean isDownTimeSet = false;
+
+    /**
      * the gesturedetector used for detecting taps and longpresses, ...
      */
     protected GestureDetector mGestureDetector;
@@ -156,55 +162,82 @@ public abstract class ChartTouchListener<T extends Chart<?>> extends GestureDete
      * @param highLightColor
      * @param activeHighLightColor
      */
-    protected void performHighlightSection(Highlight h, int highLightColor, int activeHighLightColor) {
-        if (h != null) {
-            if (mFirstHighlighted == null) {
-                mChart.highlightValue(h, true);
-                mFirstHighlighted = h;
-            } else if (mSecondHighlighted == null && h.getX() > mFirstHighlighted.getX()) {
-                mSecondHighlighted = h;
-                mLastLineTapped = mSecondHighlighted;
-                mSecondHighlighted.setColor(activeHighLightColor);
-                mChart.highlightValues(new Highlight[] {mFirstHighlighted, mSecondHighlighted});
-                fillSection();
-            } else if (mSecondHighlighted == null && h.getX() == mFirstHighlighted.getX()) {
+    protected void performHighlightSection(Highlight h, int highLightColor, int activeHighLightColor, boolean isSingleTap) {
+        if (h == null) {
+            return;
+        }
+        if (mFirstHighlighted == null) {
+            mChart.highlightValue(h, true);
+            mFirstHighlighted = h;
+            return;
+        }
+        if (mSecondHighlighted == null) {
+            if (h.getX() > mFirstHighlighted.getX()) {
+                setSecondHighlight(h, activeHighLightColor);
+            } else if (h.getX() == mFirstHighlighted.getX()) {
                 mSecondHighlighted = h;
                 mSecondHighlighted.setX(mSecondHighlighted.getX() + 1);
                 mLastLineTapped = mSecondHighlighted;
                 mSecondHighlighted.setColor(activeHighLightColor);
-                mChart.highlightValues(new Highlight[] {mFirstHighlighted, mSecondHighlighted});
-                fillSection();
-            } else if (mSecondHighlighted == null && h.getX() < mFirstHighlighted.getX()) {
+            } else {
                 mSecondHighlighted = mFirstHighlighted;
-                mLastLineTapped = h;
-                mFirstHighlighted = h;
-                mFirstHighlighted.setColor(activeHighLightColor);
-                mChart.highlightValues(new Highlight[] {mFirstHighlighted, mSecondHighlighted});
-                fillSection();
-            } else if (h.equalTo(mFirstHighlighted)) {
+                setFirstHighlight(h, activeHighLightColor);
+            }
+            mChart.highlightValues(new Highlight[]{mFirstHighlighted, mSecondHighlighted});
+            fillSection();
+            return;
+        }
+        if (h.isTappedOnTheLineWithInaccuracy(mFirstHighlighted)) {
+            if (!isSingleTap && h.getDownTime() != mSecondHighlighted.getDownTime()) {
                 mLastLineTapped = h;
                 mFirstHighlighted.setColor(activeHighLightColor);
                 mSecondHighlighted.setColor(highLightColor);
-                mChart.highlightValues(new Highlight[] {mFirstHighlighted, mSecondHighlighted});
-            } else if (h.equalTo(mSecondHighlighted)) {
+            } else if (isSingleTap) {
+                mLastLineTapped = h;
+                mFirstHighlighted.setColor(activeHighLightColor);
+                mSecondHighlighted.setColor(highLightColor);
+            }
+        } else if (h.isTappedOnTheLineWithInaccuracy(mSecondHighlighted) ) {
+            if (!isSingleTap && h.getDownTime() != mFirstHighlighted.getDownTime()) {
                 mLastLineTapped = h;
                 mSecondHighlighted.setColor(activeHighLightColor);
                 mFirstHighlighted.setColor(highLightColor);
-                mChart.highlightValues(new Highlight[] {mFirstHighlighted, mSecondHighlighted});
-            } else if (mLastLineTapped.equalTo(mFirstHighlighted) && h.getX() < mSecondHighlighted.getX()) {
-                mFirstHighlighted = h;
-                mLastLineTapped = h;
-                mFirstHighlighted.setColor(activeHighLightColor);
-                mChart.highlightValues(new Highlight[] {mFirstHighlighted, mSecondHighlighted});
-                fillSection();
-            } else if (mLastLineTapped.equalTo(mSecondHighlighted) && h.getX() > mFirstHighlighted.getX()) {
-                mSecondHighlighted = h;
+            } else if (isSingleTap) {
                 mLastLineTapped = h;
                 mSecondHighlighted.setColor(activeHighLightColor);
-                mChart.highlightValues(new Highlight[]{mFirstHighlighted, mSecondHighlighted});
-                fillSection();
+                mFirstHighlighted.setColor(highLightColor);
             }
+        } else if (mLastLineTapped.isTappedOnTheLineWithInaccuracy(mFirstHighlighted) && h.getX() < mSecondHighlighted.getX() ) {
+            setFirstHighlight(h, activeHighLightColor);
+        } else if (mLastLineTapped.isTappedOnTheLineWithInaccuracy(mSecondHighlighted) && h.getX() > mFirstHighlighted.getX() ) {
+            setSecondHighlight(h, activeHighLightColor);
         }
+        mChart.highlightValues(new Highlight[]{mFirstHighlighted, mSecondHighlighted});
+        fillSection();
+    }
+
+    /**
+     * Sets thr first Highlight line object
+     *
+     * @param h
+     * @param color
+     */
+    private void setFirstHighlight(Highlight h, int color) {
+        mFirstHighlighted = h;
+        mLastLineTapped = h;
+        mFirstHighlighted.setColor(color);
+    }
+
+    /**
+     * Sets thr second Highlight line object
+     *
+     * @param h
+     * @param color
+     */
+    private void setSecondHighlight(Highlight h, int color) {
+        mSecondHighlighted = h;
+        mLastLineTapped = h;
+        mSecondHighlighted.setColor(color);
     }
 
     protected void fillSection() {

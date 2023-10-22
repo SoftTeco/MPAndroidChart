@@ -68,6 +68,16 @@ public class Highlight {
      */
     private int color;
 
+    /**
+     * Accuracy of tapping on the area selection line
+     */
+    private float highlightInaccuracy = 1;
+
+    /**
+     * Down time of motion event
+     */
+    private float downTime = 0f;
+
     public Highlight(float x, float y, int dataSetIndex, int dataIndex) {
         this.mX = x;
         this.mY = y;
@@ -133,6 +143,40 @@ public class Highlight {
      */
     public void setX(float x) {
         mX = x;
+    }
+
+    /**
+     * Returns the down time of motion event
+     *
+     * @return
+     */
+    public float getDownTime() {
+        return downTime;
+    }
+
+    /**
+     * Sets the down time of motion event
+     *
+     * @param time
+     */
+    public void setDownTime(float time) {
+        downTime = time;
+    }
+
+    /**
+     * Returns accuracy of tapping on the area selection line
+     *
+     * @return
+     */
+    public float getHighlightInaccuracy() {
+        return highlightInaccuracy;
+    }
+
+    /**
+     * Sets accuracy of tapping on the area selection line
+     */
+    public void setHighlightInaccuracy(float width) {
+        highlightInaccuracy = width;
     }
 
     /**
@@ -267,6 +311,23 @@ public class Highlight {
                 return true;
             else
                 return false;
+        }
+    }
+
+    /**
+     * Returns tapped or not on the certain(first or second) vertical line to
+     * select a section of the graph with the specified accuracy
+     *
+     * @return
+     */
+    public boolean isTappedOnTheLineWithInaccuracy(Highlight h ) {
+        if (h != null) {
+            float leftXOfFirstHighlighted = h.getX() - highlightInaccuracy;
+            float rightXOfFirstHighlighted = h.getX() + highlightInaccuracy;
+            return  (this.getX() > leftXOfFirstHighlighted && this.getX() < rightXOfFirstHighlighted
+                    && this.mDataSetIndex == h.mDataSetIndex && this.mStackIndex == h.mStackIndex && this.mDataIndex == h.mDataIndex);
+        } else {
+            return false;
         }
     }
 
