@@ -22,7 +22,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * Superclass of all render classes for the different data types (line, bar, ...).
  *
  * @author Philipp Jahoda
- * Modifications copyright (C) 2023 SofTeco LLC
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public abstract class DataRenderer extends Renderer {
 
