@@ -785,7 +785,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     /**
      * if true, the area selection function is enabled by tapping
      */
-    protected boolean highlightSectionPerTapEnabled = false;
+    protected boolean highlightSectionPerTapAndDrаgEnabled = false;
 
     /**
      * draws all MarkerViews on the highlighted positions
@@ -1263,23 +1263,24 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
-     * Set this to true to enable the function of selecting a section on the graph by tapping
+     * Set this to true to enable the function of selecting a section on the graph
+     * by tapping and dragging
      * default: false
      *
      * @param enabled
      */
-    public void setHighlightSectionPerTapEnabled(boolean enabled){
-        highlightSectionPerTapEnabled = enabled;
+    public void setHighlightSectionPerTapAndDragEnabled(boolean enabled){
+        highlightSectionPerTapAndDrаgEnabled = enabled;
     }
 
     /**
-     * Returns true if the function of selecting a section of the graph by clicking
-     * is enabled, false if not.
+     * Returns true if the function of selecting a section of the graph by tapping and
+     * dragging is enabled, false if not.
      *
      * @return
      */
-    public boolean isHighlightSectionPerTapEnabled(){
-        return highlightSectionPerTapEnabled;
+    public boolean isHighlightSectionPerTapAndDragEnabled(){
+        return highlightSectionPerTapAndDrаgEnabled;
     }
 
     /**
