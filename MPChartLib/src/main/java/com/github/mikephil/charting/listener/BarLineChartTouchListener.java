@@ -2,7 +2,6 @@ package com.github.mikephil.charting.listener;
 
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
-import android.graphics.PointF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -25,6 +24,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * touch interaction. Longpress == Zoom out. Double-Tap == Zoom in.
  *
  * @author Philipp Jahoda
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBase<? extends BarLineScatterCandleBubbleData<?
         extends IBarLineScatterCandleBubbleDataSet<? extends Entry>>>> {
@@ -443,8 +443,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
 
-        if (h != null && !h.equalTo(mLastHighlighted)) {
-            mLastHighlighted = h;
+        if (h != null && !h.equalTo(mFirstHighlighted)) {
+            mFirstHighlighted = h;
             mChart.highlightValue(h, true);
         }
     }
@@ -628,7 +628,13 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
         }
 
         Highlight h = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
-        performHighlight(h, e);
+        if (!mChart.isHighlightSectionPerTapEnabled()) {
+            performHighlight(h, e);
+        } else {
+            int highLightColor = mChart.getData().getDataSets().get(0).getHighLightColor();
+            int activeHighLightColor = mChart.getData().getDataSets().get(0).getActiveHighLightColorForSection();
+            performHighlightSection(h, highLightColor, activeHighLightColor);
+        }
 
         return super.onSingleTapUp(e);
     }

@@ -7,6 +7,7 @@ import com.github.mikephil.charting.components.YAxis;
  * Contains information needed to determine the highlighted value.
  *
  * @author Philipp Jahoda
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public class Highlight {
 
@@ -59,6 +60,13 @@ public class Highlight {
      * the y-position (pixels) on which this highlight object was last drawn
      */
     private float mDrawY;
+
+    /**
+     * The color of the active Highlight object.
+     *
+     * @param color
+     */
+    private int color;
 
     public Highlight(float x, float y, int dataSetIndex, int dataIndex) {
         this.mX = x;
@@ -116,6 +124,15 @@ public class Highlight {
      */
     public float getX() {
         return mX;
+    }
+
+    /**
+     * Sets the x-value of the the highlighted value
+     *
+     * @return
+     */
+    public void setX(float x) {
+        mX = x;
     }
 
     /**
@@ -213,6 +230,24 @@ public class Highlight {
      */
     public float getDrawY() {
         return mDrawY;
+    }
+
+    /**
+     * Sets the color of the active Highlight object.
+     *
+     * @param color
+     */
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    /**
+     * Returns the color of the active Highlight object.
+     *
+     * @return
+     */
+    public int getColor() {
+        return color;
     }
 
     /**

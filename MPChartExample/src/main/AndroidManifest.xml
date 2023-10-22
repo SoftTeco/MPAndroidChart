@@ -29,6 +29,12 @@
             android:name="LineChartActivity1"
             android:exported="false"/>
         <activity
+            android:name="HighlightedLineChartActivity"
+            android:exported="false"/>
+        <activity
+            android:name="HighlightedLineChartTime"
+            android:exported="false"/>
+        <activity
             android:name="LineChartActivity2"
             android:exported="false"/>
         <activity
@@ -37,7 +43,7 @@
         <activity
             android:name="BarChartActivity"
             android:exported="false"/>
-		<activity
+        <activity
             android:name="HorizontalBarChartActivity"
             android:exported="false"/>
         <activity
