@@ -6,6 +6,7 @@ import com.github.mikephil.charting.data.Entry;
 
 /**
  * Created by Philipp Jahoda on 21/10/15.
+ * Modifications copyright (C) 2023 SofTeco LLC
  */
 public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRadarDataSet<T> {
 
@@ -46,6 +47,13 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
     boolean isDrawFilledEnabled();
 
     /**
+     * Returns true if filled section drawing is enabled, false if not
+     *
+     * @return
+     */
+    boolean isDrawFilledSectionEnabled();
+
+    /**
      * Set to true if the DataSet should be drawn filled (surface), and not just
      * as a line, disabling this will give great performance boost. Please note that this method
      * uses the canvas.clipPath(...) method for drawing the filled area.
@@ -55,4 +63,24 @@ public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRa
      * @param enabled
      */
     void setDrawFilled(boolean enabled);
+
+    /**
+     * Set the start and end index to fill in the section
+     *
+     * @param filledStartIndex start index of section filling
+     * @param filledEndIndex end index of section filling
+     */
+    void setDrawFilledSection(int filledStartIndex, int filledEndIndex);
+
+    /**
+     * Disables section filling
+     */
+    void disableFilledSection();
+
+    /**
+     * Returns the start and end index of filled section
+     *
+     * @return
+     */
+    int[] getIndexesOfDrawFilledSection();
 }
