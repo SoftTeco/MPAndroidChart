@@ -134,7 +134,7 @@ Please read the [**documentation**](https://weeklycoding.com/mpandroidchart/) fi
 
 Copyright 2020 Philipp Jahoda
 
-Modifications copyright (C) 2023 SofTeco LLC
+Modifications copyright (C) 2023 SoftTeco LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
