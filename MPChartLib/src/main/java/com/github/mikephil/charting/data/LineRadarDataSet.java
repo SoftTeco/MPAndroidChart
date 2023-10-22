@@ -14,7 +14,7 @@ import java.util.List;
  * Base dataset for line and radar DataSets.
  *
  * @author Philipp Jahoda
- * Modifications copyright (C) 2023 SofTeco LLC
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
 
