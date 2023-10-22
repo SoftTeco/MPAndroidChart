@@ -6,7 +6,7 @@ import com.github.mikephil.charting.data.Entry;
 
 /**
  * Created by Philipp Jahoda on 21/10/15.
- * Modifications copyright (C) 2023 SofTeco LLC
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public interface ILineRadarDataSet<T extends Entry> extends ILineScatterCandleRadarDataSet<T> {
 

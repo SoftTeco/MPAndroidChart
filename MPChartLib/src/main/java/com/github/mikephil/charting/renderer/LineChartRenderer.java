@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Modifications copyright (C) 2023 SofTeco LLC
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public class LineChartRenderer extends LineRadarRenderer {
 
