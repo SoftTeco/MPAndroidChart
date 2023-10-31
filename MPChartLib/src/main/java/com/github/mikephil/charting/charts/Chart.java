@@ -14,7 +14,6 @@ import android.graphics.Paint.Align;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore.Images;
 import android.text.TextUtils;
@@ -25,7 +24,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.animation.Easing.EasingFunction;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
@@ -59,6 +57,7 @@ import java.util.ArrayList;
  * Baseclass of all Chart-Views.
  *
  * @author Philipp Jahoda
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Entry>>> extends
         ViewGroup
@@ -311,7 +310,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
         mData = null;
         mOffsetsCalculated = false;
         mIndicesToHighlight = null;
-        mChartTouchListener.setLastHighlighted(null);
+        mChartTouchListener.setFirstHighlighted(null);
         invalidate();
     }
 
@@ -499,6 +498,15 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     }
 
     /**
+     * Resets highlighted section
+     */
+    public void clearHighlighted() {
+        mIndicesToHighlight = new Highlight[0];
+        mChartTouchListener.setFirstHighlighted(null);
+        mChartTouchListener.setSecondHighlighted(null);
+    }
+
+    /**
      * Returns true if values can be highlighted via tap gesture, false if not.
      *
      * @return
@@ -538,9 +546,9 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     protected void setLastHighlighted(Highlight[] highs) {
 
         if (highs == null || highs.length <= 0 || highs[0] == null) {
-            mChartTouchListener.setLastHighlighted(null);
+            mChartTouchListener.setFirstHighlighted(null);
         } else {
-            mChartTouchListener.setLastHighlighted(highs[0]);
+            mChartTouchListener.setFirstHighlighted(highs[0]);
         }
     }
 
@@ -773,6 +781,11 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      * the view that represents the marker
      */
     protected IMarker mMarker;
+
+    /**
+     * if true, the area selection function is enabled by tapping
+     */
+    protected boolean highlightSectionPerTapEnabled = false;
 
     /**
      * draws all MarkerViews on the highlighted positions
@@ -1247,6 +1260,26 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
      */
     public void setMarker(IMarker marker) {
         mMarker = marker;
+    }
+
+    /**
+     * Set this to true to enable the function of selecting a section on the graph by tapping
+     * default: false
+     *
+     * @param enabled
+     */
+    public void setHighlightSectionPerTapEnabled(boolean enabled){
+        highlightSectionPerTapEnabled = enabled;
+    }
+
+    /**
+     * Returns true if the function of selecting a section of the graph by clicking
+     * is enabled, false if not.
+     *
+     * @return
+     */
+    public boolean isHighlightSectionPerTapEnabled(){
+        return highlightSectionPerTapEnabled;
     }
 
     /**

@@ -9,6 +9,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Created by Philipp Jahoda on 11/07/15.
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public abstract class LineScatterCandleRadarRenderer extends BarLineScatterCandleBubbleRenderer {
 
@@ -30,9 +31,13 @@ public abstract class LineScatterCandleRadarRenderer extends BarLineScatterCandl
      * @param set the currently drawn dataset
      */
     protected void drawHighlightLines(Canvas c, float x, float y, ILineScatterCandleRadarDataSet set) {
+        drawHighlightLinesByTapping(c, x, y, set, set.getHighLightColor());
+    }
+
+    protected void drawHighlightLinesByTapping(Canvas c, float x, float y, ILineScatterCandleRadarDataSet set, int color) {
 
         // set color and stroke-width
-        mHighlightPaint.setColor(set.getHighLightColor());
+        mHighlightPaint.setColor(color);
         mHighlightPaint.setStrokeWidth(set.getHighlightLineWidth());
 
         // draw highlighted lines (if enabled)

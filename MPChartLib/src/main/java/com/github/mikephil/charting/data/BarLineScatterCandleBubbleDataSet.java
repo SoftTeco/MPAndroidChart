@@ -11,6 +11,7 @@ import java.util.List;
  * Baseclass of all DataSets for Bar-, Line-, Scatter- and CandleStickChart.
  *
  * @author Philipp Jahoda
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
         extends DataSet<T>
@@ -20,6 +21,11 @@ public abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
      * default highlight color
      */
     protected int mHighLightColor = Color.rgb(255, 187, 115);
+
+    /**
+     * default active highlight color
+     */
+    protected int mActiveHighLightColor = Color.RED;
 
     public BarLineScatterCandleBubbleDataSet(List<T> yVals, String label) {
         super(yVals, label);
@@ -36,9 +42,30 @@ public abstract class BarLineScatterCandleBubbleDataSet<T extends Entry>
         mHighLightColor = color;
     }
 
+    /**
+     * Sets the color of the active vertical line to highlight
+     * a section on the chart
+     *
+     * @param color
+     */
+    public void setActiveHighLightColorForSection(int color) {
+        mActiveHighLightColor = color;
+    }
+
     @Override
     public int getHighLightColor() {
         return mHighLightColor;
+    }
+
+    /**
+     * Returns the color of the active vertical line to highlight
+     * a section on the chart
+     *
+     * @return
+     */
+    @Override
+    public int getActiveHighLightColorForSection() {
+        return mActiveHighLightColor;
     }
 
     protected void copy(BarLineScatterCandleBubbleDataSet barLineScatterCandleBubbleDataSet) {
