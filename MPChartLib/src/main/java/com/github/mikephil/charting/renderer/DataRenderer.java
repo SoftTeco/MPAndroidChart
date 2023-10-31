@@ -22,6 +22,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  * Superclass of all render classes for the different data types (line, bar, ...).
  *
  * @author Philipp Jahoda
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public abstract class DataRenderer extends Renderer {
 
@@ -47,6 +48,11 @@ public abstract class DataRenderer extends Renderer {
      * entries)
      */
     protected Paint mValuePaint;
+
+    /**
+     * if true, the graph type is LineChartTime
+     */
+    protected Boolean isLineChartTime = false;
 
     public DataRenderer(ChartAnimator animator, ViewPortHandler viewPortHandler) {
         super(viewPortHandler);
@@ -115,6 +121,15 @@ public abstract class DataRenderer extends Renderer {
     }
 
     /**
+     * Returns true if the graph type is LineChartTime
+     *
+     * @return
+     */
+    public boolean isLineChartTime() {
+        return isLineChartTime;
+    }
+
+    /**
      * Initializes the buffers used for rendering with a new size. Since this
      * method performs memory allocations, it should only be called if
      * necessary.
@@ -166,4 +181,14 @@ public abstract class DataRenderer extends Renderer {
      * @param indices the highlighted values
      */
     public abstract void drawHighlighted(Canvas c, Highlight[] indices);
+
+    /**
+     * Sets the LineChartTime chart type
+     *
+     * @param value the highlighted values
+     */
+    public void useLineChartTime(boolean value) {
+        isLineChartTime = value;
+    }
+
 }
