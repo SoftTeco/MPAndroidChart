@@ -14,6 +14,7 @@ import java.util.List;
  * Base dataset for line and radar DataSets.
  *
  * @author Philipp Jahoda
+ * Modifications copyright (C) 2023 SoftTeco LLC
  */
 public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandleRadarDataSet<T> implements ILineRadarDataSet<T> {
 
@@ -43,6 +44,15 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
      */
     private boolean mDrawFilled = false;
 
+    /**
+     * start index to fill in the section
+     */
+    private int mDrawFilledStartIndex = 0;
+
+    /**
+     * end index to fill in the section
+     */
+    private int mDrawFilledEndIndex = 0;
 
     public LineRadarDataSet(List<T> yVals, String label) {
         super(yVals, label);
@@ -120,8 +130,30 @@ public abstract class LineRadarDataSet<T extends Entry> extends LineScatterCandl
     }
 
     @Override
+    public void setDrawFilledSection(int filledStartIndex, int filledEndIndex) {
+        mDrawFilledStartIndex = filledStartIndex;
+        mDrawFilledEndIndex = filledEndIndex;
+    }
+
+    @Override
+    public void disableFilledSection() {
+        mDrawFilledStartIndex = 0;
+        mDrawFilledEndIndex = 0;
+    }
+
+    @Override
+    public int[] getIndexesOfDrawFilledSection() {
+        return new int[]{ mDrawFilledStartIndex, mDrawFilledEndIndex };
+    }
+
+    @Override
     public boolean isDrawFilledEnabled() {
         return mDrawFilled;
+    }
+
+    @Override
+    public boolean isDrawFilledSectionEnabled() {
+        return mDrawFilledStartIndex < mDrawFilledEndIndex && mDrawFilledStartIndex >= 0;
     }
 
     protected void copy(LineRadarDataSet lineRadarDataSet) {
